@@ -1,7 +1,6 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
     "dev": "dotenv -e .env.development -- nodemon Server/server.js",
     "start": "node Server/server.js",
