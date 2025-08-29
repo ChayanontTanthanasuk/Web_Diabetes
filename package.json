@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "dotenv -e .env.development -- nodemon Server/server.js",
-    "start": "dotenv -e .env.production -- node Server/server.js",
+    "start": "node Server/server.js",
     "migrate:dev": "dotenv -e .env.development -- prisma migrate dev",
     "deploy:db": "dotenv -e .env.production -- prisma migrate deploy",
     "push:db": "dotenv -e .env.production -- prisma db push",
