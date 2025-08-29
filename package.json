@@ -1,0 +1,35 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "dotenv -e .env.development -- nodemon Server/server.js",
+    "start": "dotenv -e .env.production -- node Server/server.js",
+    "migrate:dev": "dotenv -e .env.development -- prisma migrate dev",
+    "deploy:db": "dotenv -e .env.production -- prisma migrate deploy",
+    "push:db": "dotenv -e .env.production -- prisma db push",
+    "studio:dev": "dotenv -e .env.development -- prisma studio",
+    "studio:prod": "dotenv -e .env.production -- prisma studio"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^6.10.0",
+    "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.7.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "firebase-admin": "^13.4.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "nodemon": "^3.1.10",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^10.0.0",
+    "prisma": "^6.10.0"
+  }
+}

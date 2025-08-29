@@ -1,0 +1,127 @@
+// schema.prisma
+datasource db {
+  provider = "postgresql" // เปลี่ยนเป็น "mysql" หรือ "sqlite" ได้
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  user_id    Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  role       Role     @default(USER)
+  created_at DateTime @default(now())
+
+  recipes   Recipe[]
+  favorites Favorite[]
+  comments  Comment[]
+}
+
+model MealTime {
+  id      Int      @id @default(autoincrement())
+  name    String // เช่น "Breakfast", "Lunch", "Dinner"
+  recipes Recipe[] @relation("RecipeMealTimes")
+}
+
+model Recipe {
+  recipe_id   Int      @id @default(autoincrement())
+  title       String
+  description String?
+  image_url   String?
+  created_at  DateTime @default(now())
+
+  category_id Int
+  created_by  Int
+  mealTimes   MealTime[] @relation("RecipeMealTimes") // Many-to-Many
+
+  category Category @relation(fields: [category_id], references: [category_id])
+  author   User     @relation(fields: [created_by], references: [user_id])
+
+  instructions Instruction[]
+  ingredients  RecipeIngredient[]
+  favorites    Favorite[]
+  comments     Comment[]
+}
+
+model Instruction {
+  id       Int    @id @default(autoincrement())
+  step     Int // ลำดับขั้นตอน
+  detail   String // เนื้อหาของขั้นตอน
+  recipeId Int
+  recipe   Recipe @relation(fields: [recipeId], references: [recipe_id])
+}
+
+model Category {
+  category_id Int    @id @default(autoincrement())
+  name        String
+
+  recipes Recipe[]
+}
+
+model Ingredient {
+  ingredient_id Int     @id @default(autoincrement())
+  name          String
+  unit          String?
+
+  recipes RecipeIngredient[]
+}
+
+model RecipeIngredient {
+  recipe_id     Int
+  ingredient_id Int
+  quantity      Float?
+  unit          String?
+
+  recipe     Recipe     @relation(fields: [recipe_id], references: [recipe_id])
+  ingredient Ingredient @relation(fields: [ingredient_id], references: [ingredient_id])
+
+  @@id([recipe_id, ingredient_id])
+}
+
+model Advertisement {
+  ad_id      Int       @id @default(autoincrement())
+  title      String
+  image_url  String?
+  link_url   String?
+  start_date DateTime?
+  end_date   DateTime?
+}
+
+model Favorite {
+  user_id    Int
+  recipe_id  Int
+  created_at DateTime @default(now())
+
+  user   User   @relation(fields: [user_id], references: [user_id])
+  recipe Recipe @relation(fields: [recipe_id], references: [recipe_id])
+
+  @@id([user_id, recipe_id])
+}
+
+model Comment {
+  comment_id   Int      @id @default(autoincrement())
+  user_id      Int
+  recipe_id    Int
+  rating       Int?
+  comment_text String?
+  created_at   DateTime @default(now())
+
+  user   User   @relation(fields: [user_id], references: [user_id])
+  recipe Recipe @relation(fields: [recipe_id], references: [recipe_id])
+}
+
+model News {
+  new_id    Int     @id @default(autoincrement())
+  title     String 
+  content   String 
+  image_url String? 
+}
+
+enum Role {
+  USER
+  ADMIN
+}
