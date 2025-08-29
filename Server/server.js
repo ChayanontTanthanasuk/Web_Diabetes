@@ -1,7 +1,7 @@
 // ไฟล์: server.js (หรือ app.js หลัก)
 const express = require('express');
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 require("dotenv").config();
 
 
